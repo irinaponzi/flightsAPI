@@ -1,7 +1,7 @@
 package com.codeki.flightsapi.service;
 
 import com.codeki.flightsapi.dto.ResponseDto;
-import com.codeki.flightsapi.exceptions.ObjectNotFoundException;
+import com.codeki.flightsapi.exceptions.NotFoundException;
 import com.codeki.flightsapi.model.Company;
 import com.codeki.flightsapi.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class CompanyService {
         if (companyOptional.isPresent()) {
             return companyOptional.get();
         }
-        throw new ObjectNotFoundException("La compañía no fue encontrada");
+        throw new NotFoundException("La compañía no fue encontrada");
     }
 
     // Si no encuentra devuelve un array vacío, ver si dejar así o cambiar
@@ -45,7 +45,7 @@ public class CompanyService {
             companyRepository.save(company);
             return company;
         }
-        throw new ObjectNotFoundException("La compañía no fue encontrada");
+        throw new NotFoundException("La compañía no fue encontrada");
     }
 
     public ResponseDto deleteById(Long id) {
@@ -54,6 +54,6 @@ public class CompanyService {
             companyRepository.deleteById(id);
             return new ResponseDto("La compañía " + id + " ha sido eliminada");
         }
-        throw new ObjectNotFoundException("La compañía no fue encontrada");
+        throw new NotFoundException("La compañía no fue encontrada");
     }
 }
