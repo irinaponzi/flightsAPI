@@ -1,9 +1,6 @@
 package com.codeki.flightsapi.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +24,9 @@ public class Flight {
     private LocalDateTime arrivingTime;
     private Double price;
     private String frequency;
+    @ManyToOne
+    @JoinColumn(name= "company_id")
+    Company company;
 
     public Flight(String origin, String destiny, LocalDateTime departureTime, LocalDateTime arrivingTime, Double price, String frequency) {
         this.origin = origin;
