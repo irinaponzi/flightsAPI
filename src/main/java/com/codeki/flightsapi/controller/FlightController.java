@@ -18,6 +18,7 @@ public class FlightController {
     @Autowired
     FlightService flightService;
 
+    @CrossOrigin
     @GetMapping("")
     public ResponseEntity<List<FlightDto>> getAllFlights() {
         return new ResponseEntity<>(flightService.findAll(), HttpStatus.OK);
