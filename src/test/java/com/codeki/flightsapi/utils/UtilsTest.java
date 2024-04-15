@@ -47,10 +47,10 @@ public class FlightUtilsTest {
 
     @Test
     void detectOffersTest() {
-        Double offerPrice = 10.0;
-        List<Flight> offersExpected = Arrays.asList(flightList.get(0), flightList.get(2));
+        Integer offerPrice = 10;
+        List<FlightDto> offersExpected = Arrays.asList(flightDtoList.get(0), flightDtoList.get(2));
 
-        List<Flight> offersActual = flightUtils.detectOffers(flightList, offerPrice);
+        List<FlightDto> offersActual = flightUtils.detectOffers(flightList, offerPrice);
 
         assertEquals(offersExpected.size(), offersActual.size());
         assertEquals(offersExpected.get(0).getId(), offersActual.get(0).getId());

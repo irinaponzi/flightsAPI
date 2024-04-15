@@ -1,13 +1,12 @@
 package com.codeki.flightsapi.service;
 
-import com.codeki.flightsapi.configuration.FlightConfig;
 import com.codeki.flightsapi.dto.FlightDto;
 import com.codeki.flightsapi.dto.ResponseDto;
 import com.codeki.flightsapi.exceptions.NotFoundException;
-import com.codeki.flightsapi.model.Dollar;
+import com.codeki.flightsapi.model.Company;
 import com.codeki.flightsapi.model.Flight;
 import com.codeki.flightsapi.repository.FlightRepository;
-import com.codeki.flightsapi.utils.FlightUtils;
+import com.codeki.flightsapi.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,19 +19,17 @@ public class FlightService {
     @Autowired
     FlightRepository flightRepository;
     @Autowired
-    FlightUtils flightUtils;
-    @Autowired
-    FlightConfig flightConfiguration;
+    Utils utils;
 
     public List<FlightDto> findAll() {
         List<Flight> flightsList = flightRepository.findAll();
-        return flightUtils.flightsListMapper(flightsList, getDollarCart());
+        return utils.flightsListMapper(flightsList);
     }
 
-    public FlightDto findById(Long id) {
+    public Flight findById(Long id) {
         Optional<Flight> flightOptional = flightRepository.findById(id);
         if (flightOptional.isPresent()) {
-            return flightUtils.flightMapper(flightOptional.get(), getDollarCart());
+            return flightOptional.get();
         }
         throw new NotFoundException("El vuelo no fue encontrado");
     }
@@ -40,7 +37,7 @@ public class FlightService {
     public List<FlightDto> findByOrigin(String origin) {
         List<Flight> flightsList = flightRepository.findByOriginContainingIgnoreCase(origin);
         if (!flightsList.isEmpty()) {
-            return flightUtils.flightsListMapper(flightsList, getDollarCart());
+            return utils.flightsListMapper(flightsList);
         }
         throw new NotFoundException("No se encontraron resultados");
     }
@@ -48,7 +45,7 @@ public class FlightService {
     public List<FlightDto> findByOriginAndDestiny(String origin, String destiny) {
         List<Flight> flightList = flightRepository.findByOriginIgnoreCaseAndDestinyIgnoreCase(origin, destiny);
         if (!flightList.isEmpty()) {
-            return flightUtils.flightsListMapper(flightList, getDollarCart());
+            return utils.flightsListMapper(flightList);
         }
         throw new NotFoundException("No se encontraron resultados");
     }
@@ -68,6 +65,16 @@ public class FlightService {
         throw new NotFoundException("El vuelo no fue encontrado");
     }
 
+//    public Flight addCompany(Long idFlight, Company company) {
+//        Optional<Flight> flightOptional = flightRepository.findById(idFlight);
+//        if (flightOptional.isPresent()) {
+//            Flight flight = flightOptional.get();
+//            flight.setCompany(company);
+//            return flightRepository.save(flight);
+//        }
+//        throw new NotFoundException("El vuelo no fue encontrado");
+//    }
+
     public ResponseDto deleteById(Long id) {
         Optional<Flight> flightOptional = flightRepository.findById(id);
         if (flightOptional.isPresent()) {
@@ -78,17 +85,10 @@ public class FlightService {
     }
 
     public List<FlightDto> getOffers(Integer offerPrice) {
-        Double offerPriceInDollars = offerPrice / getDollarCart();
-        List<Flight> flightsOffers = flightUtils.detectOffers(flightRepository.findAll(), offerPriceInDollars);
+        List<FlightDto> flightsOffers = utils.detectOffers(flightRepository.findAll(), offerPrice);
         if (!flightsOffers.isEmpty()) {
-            return flightUtils.flightsListMapper(flightsOffers, getDollarCart());
+            return flightsOffers;
         }
         throw new NotFoundException("No se encontraron resultados");
     }
-
-    private Double getDollarCart() {
-        Dollar dollar = flightConfiguration.fetchDollarCard();
-        return dollar.getPromedio();
-    }
-
 }

@@ -28,9 +28,12 @@ public class CompanyService {
         throw new NotFoundException("La compañía no fue encontrada");
     }
 
-    // Si no encuentra devuelve un array vacío, ver si dejar así o cambiar
     public List<Company> findByName(String name) {
-        return companyRepository.findByNameContainingIgnoreCase(name);
+        List<Company> companyList = companyRepository.findByNameContainingIgnoreCase(name);
+        if (!companyList.isEmpty()) {
+            return companyList;
+        }
+        throw new NotFoundException("No se encontraron resultados");
     }
 
     public Company create(Company company) {
