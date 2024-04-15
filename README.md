@@ -31,3 +31,8 @@ Por defecto, para ejecutar el proyecto es necesario crear un esquema vacío con 
 ## Documentación
 [Ver la documentación de la API](/src/main/resources/swagger.yaml)
 
+<iframe width="100%" height="500px" src="https://petstore.swagger.io/?url=https://raw.githubusercontent.com/irinaponzi/flightsAPI/main/src/main/resources/swagger.yaml"></iframe>
+
+
+
+
