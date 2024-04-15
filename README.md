@@ -29,5 +29,5 @@ Por defecto, para ejecutar el proyecto es necesario crear un esquema vacío con 
 ```
 
 ## Documentación
-[Ver la documentación de la API](/swagger.yaml)
+[Ver la documentación de la API](/src/main/resources/swagger.yaml)
 
