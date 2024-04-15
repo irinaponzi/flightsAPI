@@ -27,3 +27,7 @@ Por defecto, para ejecutar el proyecto es necesario crear un esquema vacío con 
     "frequency": "Semanal"
 }
 ```
+
+## Documentación
+[Ver la documentación de la API](/swagger.yaml)
+
