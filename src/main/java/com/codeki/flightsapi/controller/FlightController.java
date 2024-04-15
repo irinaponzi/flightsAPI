@@ -25,23 +25,37 @@ public class FlightController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FlightDto> getFlightById(@PathVariable Long id) {
+    public ResponseEntity<Flight> getFlightById(@PathVariable Long id) {
         return new ResponseEntity<>(flightService.findById(id), HttpStatus.OK);
     }
 
+    @CrossOrigin
     @GetMapping("/origin")
     public ResponseEntity<List<FlightDto>> getFlightsByOrigin(@RequestParam String origin) {
         return new ResponseEntity<>(flightService.findByOrigin(origin), HttpStatus.OK);
     }
 
+    @CrossOrigin
     @GetMapping("/location")
     public ResponseEntity<List<FlightDto>> getFlightsByLocations(@RequestParam String origin, @RequestParam String destiny) {
         return new ResponseEntity<>(flightService.findByOriginAndDestiny(origin, destiny), HttpStatus.OK);
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<Flight> createFlight(@RequestBody Flight flight) {
-        return new ResponseEntity<>(flightService.create(flight), HttpStatus.CREATED);
+    @CrossOrigin
+    @GetMapping("/company")
+    public ResponseEntity<List<FlightDto>> getFlightsByCompany(@RequestParam String companyName) {
+        return new ResponseEntity<>(flightService.findByCompanyName(companyName), HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @GetMapping("/offers")
+    public ResponseEntity<List<FlightDto>> getOffers(@RequestParam Integer offerPrice) {
+        return new ResponseEntity<>(flightService.getOffers(offerPrice), HttpStatus.OK);
+    }
+
+    @PostMapping("/create/{companyId}")
+    public ResponseEntity<Flight> createFlight(@PathVariable Long companyId, @RequestBody Flight flight) {
+        return new ResponseEntity<>(flightService.create(companyId, flight), HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
@@ -53,10 +67,4 @@ public class FlightController {
     public ResponseEntity<ResponseDto> deleteFlight(@PathVariable Long id) {
         return new ResponseEntity<>(flightService.deleteById(id), HttpStatus.OK);
     }
-
-    @GetMapping("/offers")
-    public ResponseEntity<List<FlightDto>> getOffers(@RequestParam Integer offerPrice) {
-        return new ResponseEntity<>(flightService.getOffers(offerPrice), HttpStatus.OK);
-    }
-
 }

@@ -5,6 +5,7 @@ import com.codeki.flightsapi.dto.ResponseDto;
 import com.codeki.flightsapi.exceptions.NotFoundException;
 import com.codeki.flightsapi.model.Company;
 import com.codeki.flightsapi.model.Flight;
+import com.codeki.flightsapi.repository.CompanyRepository;
 import com.codeki.flightsapi.repository.FlightRepository;
 import com.codeki.flightsapi.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ public class FlightService {
 
     @Autowired
     FlightRepository flightRepository;
+    @Autowired
+    CompanyRepository companyRepository;
     @Autowired
     Utils utils;
 
@@ -50,38 +53,12 @@ public class FlightService {
         throw new NotFoundException("No se encontraron resultados");
     }
 
-    public Flight create(Flight flight) {
-        flightRepository.save(flight);
-        return flight;
-    }
-
-    public Flight update(Long id, Flight flight) {
-        Optional<Flight> flightOptional = flightRepository.findById(id);
-        if (flightOptional.isPresent()) {
-            flight.setId(id);
-            flightRepository.save(flight);
-            return flight;
+    public List<FlightDto> findByCompanyName(String companyName) {
+        List<Flight> flightList = flightRepository.findByCompanyNameContainingIgnoreCase(companyName);
+        if (!flightList.isEmpty()) {
+            return utils.flightsListMapper(flightList);
         }
-        throw new NotFoundException("El vuelo no fue encontrado");
-    }
-
-//    public Flight addCompany(Long idFlight, Company company) {
-//        Optional<Flight> flightOptional = flightRepository.findById(idFlight);
-//        if (flightOptional.isPresent()) {
-//            Flight flight = flightOptional.get();
-//            flight.setCompany(company);
-//            return flightRepository.save(flight);
-//        }
-//        throw new NotFoundException("El vuelo no fue encontrado");
-//    }
-
-    public ResponseDto deleteById(Long id) {
-        Optional<Flight> flightOptional = flightRepository.findById(id);
-        if (flightOptional.isPresent()) {
-            flightRepository.deleteById(id);
-            return new ResponseDto("El vuelo " + id + " ha sido eliminado");
-        }
-        throw new NotFoundException("El vuelo no fue encontrado");
+        throw new NotFoundException("No se encontraron resultados");
     }
 
     public List<FlightDto> getOffers(Integer offerPrice) {
@@ -90,5 +67,32 @@ public class FlightService {
             return flightsOffers;
         }
         throw new NotFoundException("No se encontraron resultados");
+    }
+
+    public Flight create(Long companyId, Flight flight) {
+        Optional<Company> companyOptional = companyRepository.findById(companyId);
+        if (companyOptional.isPresent()) {
+            flight.setCompany(companyOptional.get());
+            return flightRepository.save(flight);
+        }
+        throw new NotFoundException("Error al crear el vuelo, la compañía no fue encontrada");
+    }
+
+    public Flight update(Long id, Flight flight) {
+        Optional<Flight> flightOptional = flightRepository.findById(id);
+        if (flightOptional.isPresent()) {
+            flight.setId(id);
+            return flightRepository.save(flight);
+        }
+        throw new NotFoundException("No se puede actualizar, el vuelo no fue encontrado");
+    }
+
+    public ResponseDto deleteById(Long id) {
+        Optional<Flight> flightOptional = flightRepository.findById(id);
+        if (flightOptional.isPresent()) {
+            flightRepository.deleteById(id);
+            return new ResponseDto("El vuelo " + id + " ha sido eliminado");
+        }
+        throw new NotFoundException("No se puede eliminar, el vuelo no fue encontrado");
     }
 }

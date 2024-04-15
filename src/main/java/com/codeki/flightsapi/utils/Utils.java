@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,7 @@ public class Utils {
         return new RestTemplate();
     }
 
+    // ver esto, debería llevar excepción
     private Dollar fetchDollarCard() {
         return restTemplate.getForObject(URL_DOLLAR_CARD, Dollar.class);
     }
@@ -46,6 +48,7 @@ public class Utils {
         List<FlightDto> flightsDtoList = flightsListMapper(flights);
         return flightsDtoList.stream()
                 .filter(flightDto -> flightDto.getConvertedPrice() <= offerPrice)
+                .sorted(Comparator.comparing(FlightDto::getConvertedPrice))
                 .collect(Collectors.toList());
     }
 }

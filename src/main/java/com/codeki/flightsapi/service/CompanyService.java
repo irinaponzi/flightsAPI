@@ -37,18 +37,16 @@ public class CompanyService {
     }
 
     public Company create(Company company) {
-        companyRepository.save(company);
-        return company;
+        return companyRepository.save(company);
     }
 
     public Company update(Long id, Company company) {
         Optional<Company> companyOptional = companyRepository.findById(id);
         if (companyOptional.isPresent()) {
             company.setId(id);
-            companyRepository.save(company);
-            return company;
+            return companyRepository.save(company);
         }
-        throw new NotFoundException("La compañía no fue encontrada");
+        throw new NotFoundException("No se puede actualizar, la compañía no fue encontrada");
     }
 
     public ResponseDto deleteById(Long id) {
@@ -57,6 +55,6 @@ public class CompanyService {
             companyRepository.deleteById(id);
             return new ResponseDto("La compañía " + id + " ha sido eliminada");
         }
-        throw new NotFoundException("La compañía no fue encontrada");
+        throw new NotFoundException("No se puede eliminar, la compañía no fue encontrada");
     }
 }

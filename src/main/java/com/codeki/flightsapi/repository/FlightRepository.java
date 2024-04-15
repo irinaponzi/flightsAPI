@@ -11,5 +11,6 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
 
     List<Flight> findByOriginContainingIgnoreCase(String origin);
     List<Flight> findByOriginIgnoreCaseAndDestinyIgnoreCase(String origin, String destiny);
+    List<Flight> findByCompanyNameContainingIgnoreCase(String companyName);
 
 }
