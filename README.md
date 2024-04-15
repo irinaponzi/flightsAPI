@@ -16,15 +16,23 @@ Por defecto, para ejecutar el proyecto es necesario crear un esquema vacío con 
 
 
 ## Json para Postman
-
+*Flight:*
 ```json
 {
-    "origin": "EZE",
-    "destiny": "COR",
-    "departureTime": "2024-02-01T08:00:00",
-    "arrivingTime": "2024-02-01T10:00:00",
-    "price": 137,
-    "frequency": "Semanal"
+    "origin": "String",
+    "destiny": "String",
+    "departureTime": "2024-01-01T10:00:00",
+    "arrivingTime": "2024-01-01T10:00:00",
+    "price": 0,
+    "frequency": "String"
+}
+```
+*Company:*
+```json
+{
+    "name": "String",
+    "page": "String",
+    "banner": "String"
 }
 ```
 
