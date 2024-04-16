@@ -4,6 +4,7 @@ import com.codeki.flightsapi.dto.FlightDto;
 import com.codeki.flightsapi.dto.ResponseDto;
 import com.codeki.flightsapi.exceptions.NotFoundException;
 import com.codeki.flightsapi.model.Company;
+import com.codeki.flightsapi.model.Dollar;
 import com.codeki.flightsapi.model.Flight;
 import com.codeki.flightsapi.repository.CompanyRepository;
 import com.codeki.flightsapi.repository.FlightRepository;
@@ -27,7 +28,7 @@ public class FlightService {
     // Busca todos los vuelos y los retorna como FlightDto
     public List<FlightDto> findAll() {
         List<Flight> flightsList = flightRepository.findAll();
-        return utils.flightsListMapper(flightsList);
+        return utils.flightsListMapper(flightsList, getDollarCart());
     }
 
     // Busca un vuelo por su ID y lo retorna. Si no lo encuentra devuelve una excepción
@@ -44,7 +45,7 @@ public class FlightService {
     public List<FlightDto> findByOrigin(String origin) {
         List<Flight> flightsList = flightRepository.findByOriginContainingIgnoreCase(origin);
         if (!flightsList.isEmpty()) {
-            return utils.flightsListMapper(flightsList);
+            return utils.flightsListMapper(flightsList, getDollarCart());
         }
         throw new NotFoundException("No results found");
     }
@@ -54,7 +55,7 @@ public class FlightService {
     public List<FlightDto> findByOriginAndDestiny(String origin, String destiny) {
         List<Flight> flightList = flightRepository.findByOriginIgnoreCaseAndDestinyIgnoreCase(origin, destiny);
         if (!flightList.isEmpty()) {
-            return utils.flightsListMapper(flightList);
+            return utils.flightsListMapper(flightList, getDollarCart());
         }
         throw new NotFoundException("No results found");
     }
@@ -64,17 +65,18 @@ public class FlightService {
     public List<FlightDto> findByCompanyName(String companyName) {
         List<Flight> flightList = flightRepository.findByCompanyNameContainingIgnoreCase(companyName);
         if (!flightList.isEmpty()) {
-            return utils.flightsListMapper(flightList);
+            return utils.flightsListMapper(flightList, getDollarCart());
         }
         throw new NotFoundException("No results found");
     }
 
-    // Busca vuelos cuyo precio sea igual o menor al precio en pesos pasado por parámetro
+    // Busca vuelos cuyo precio sea igual o menor al precio en PESOS pasado por parámetro
     // Retorna una lista de FlightDto con los vuelos encontrados ordenados por su precio. Si la lista está vacía devuelve una excepción
     public List<FlightDto> getOffers(Integer offerPrice) {
-        List<FlightDto> flightsOffers = utils.detectOffers(flightRepository.findAll(), offerPrice);
+        Double offerPriceToDollar = offerPrice / getDollarCart();
+        List<Flight> flightsOffers = utils.detectOffers(flightRepository.findAll(), offerPriceToDollar);
         if (!flightsOffers.isEmpty()) {
-            return flightsOffers;
+            return utils.flightsListMapper(flightsOffers, getDollarCart());
         }
         throw new NotFoundException("No results found");
     }
@@ -111,5 +113,11 @@ public class FlightService {
             return new ResponseDto("The flight " + id + " has been deleted");
         }
         throw new NotFoundException("Unable to delete: Flight not found");
+    }
+
+    // Retorna el valor del dolar tarjeta que se utilizará: un promedio
+    private Double getDollarCart() {
+        Dollar dollar = utils.fetchDollarCard();
+        return dollar.getPromedio();
     }
 }

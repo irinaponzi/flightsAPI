@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class Utils {
 
     private static final String URL_DOLLAR_CARD = "https://dolarapi.com/v1/dolares/tarjeta";
-    private final RestTemplate restTemplate = restTemplate();
+    private RestTemplate restTemplate = restTemplate();
 
     @Bean
     public RestTemplate restTemplate() {
@@ -23,37 +23,29 @@ public class Utils {
     }
 
     // Fetch a DolarApi para los valores del dolar tarjeta
-    private Dollar fetchDollarCard() {
+    public Dollar fetchDollarCard() {
         return restTemplate.getForObject(URL_DOLLAR_CARD, Dollar.class);
     }
 
-    // Retorna el valor del dolar tarjeta que se utilizará: un promedio
-    public Double getDollarCart() {
-        Dollar dollar = fetchDollarCard();
-        return dollar.getPromedio();
-    }
-
     // Mapper de Flight a FlightDto
-    public FlightDto flightMapper(Flight flight) {
-        Double dollar = getDollarCart();
+    public FlightDto flightMapper(Flight flight, Double dollar) {
         return new FlightDto(flight.getId(),flight.getOrigin(), flight.getDestiny(), flight.getDepartureTime(),
                 flight.getArrivingTime(), flight.getPrice() * dollar, flight.getFrequency(), flight.getCompany());
     }
 
     // Mapper para listas: recibe una lista de Flight y devuelve una lista de FlightDto. Mapea llamando al método flightMapper
-    public List<FlightDto> flightsListMapper(List<Flight> flightsList) {
+    public List<FlightDto> flightsListMapper(List<Flight> flightsList, Double dollar) {
         return flightsList.stream()
-                .map(this::flightMapper)
+                .map(flight -> flightMapper(flight, dollar))
                 .collect(Collectors.toList());
     }
 
-    // Busca vuelos con precios iguales o menores al offerPrice pasado por parámetro, que corresponde a un valor en pesos
-    public List<FlightDto> detectOffers(List<Flight> flights, Integer offerPrice) {
-        // Se mapea para la comparación de precios en pesos. Luego se filtra y el resultado se ordena de menor a mayor precio
-        List<FlightDto> flightsDtoList = flightsListMapper(flights);
-        return flightsDtoList.stream()
-                .filter(flightDto -> flightDto.getConvertedPrice() <= offerPrice)
-                .sorted(Comparator.comparing(FlightDto::getConvertedPrice))
+    // Busca vuelos con precios iguales o menores al offerPrice pasado por parámetro
+    public List<Flight> detectOffers(List<Flight> flights, Double offerPrice) {
+        // Se filtra y el resultado se ordena de menor a mayor precio
+        return flights.stream()
+                .filter(flightDto -> flightDto.getPrice() <= offerPrice)
+                .sorted(Comparator.comparing(Flight::getPrice))
                 .collect(Collectors.toList());
     }
 }
