@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 public class ResponseDto {
 
+    // ResponseDto se utiliza para mensajes simples de respuesta, que dan alguna información en un String
     private String message;
 
 }

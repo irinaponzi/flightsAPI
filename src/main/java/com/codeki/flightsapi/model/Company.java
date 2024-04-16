@@ -23,6 +23,7 @@ public class Company {
     private String page;
     private String banner;
 
+    // Constructor sin ID
     public Company(String name, String page, String banner) {
         this.name = name;
         this.page = page;

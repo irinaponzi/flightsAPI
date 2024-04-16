@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 public class Dollar {
 
+    // Modelo para el fetch a DolarApi
     private String moneda;
     private String casa;
     private String nombre;
@@ -20,8 +21,8 @@ public class Dollar {
     private Double venta;
     private LocalDateTime fechaActualizacion;
 
+    // Calcula el promedio entre el valor de compra y venta del dolar
     public Double getPromedio() {
         return ((compra + venta) / 2);
     }
-
 }

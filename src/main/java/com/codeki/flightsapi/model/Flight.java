@@ -28,25 +28,7 @@ public class Flight {
     @JoinColumn(name= "company_id")
     Company company;
 
-    public Flight(Long id, String origin, String destiny, LocalDateTime departureTime, LocalDateTime arrivingTime, Double price, String frequency) {
-        this.id = id;
-        this.origin = origin;
-        this.destiny = destiny;
-        this.departureTime = departureTime;
-        this.arrivingTime = arrivingTime;
-        this.price = price;
-        this.frequency = frequency;
-    }
-
-    public Flight(String origin, String destiny, LocalDateTime departureTime, LocalDateTime arrivingTime, Double price, String frequency) {
-        this.origin = origin;
-        this.destiny = destiny;
-        this.departureTime = departureTime;
-        this.arrivingTime = arrivingTime;
-        this.price = price;
-        this.frequency = frequency;
-    }
-
+    // Constructor sin ID
     public Flight(String origin, String destiny, LocalDateTime departureTime, LocalDateTime arrivingTime, Double price, String frequency, Company company) {
         this.origin = origin;
         this.destiny = destiny;

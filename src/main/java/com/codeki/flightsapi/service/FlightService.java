@@ -24,75 +24,90 @@ public class FlightService {
     @Autowired
     Utils utils;
 
+    // Busca todos los vuelos y los retorna como FlightDto
     public List<FlightDto> findAll() {
         List<Flight> flightsList = flightRepository.findAll();
         return utils.flightsListMapper(flightsList);
     }
 
+    // Busca un vuelo por su ID y lo retorna. Si no lo encuentra devuelve una excepción
     public Flight findById(Long id) {
         Optional<Flight> flightOptional = flightRepository.findById(id);
         if (flightOptional.isPresent()) {
             return flightOptional.get();
         }
-        throw new NotFoundException("El vuelo no fue encontrado");
+        throw new NotFoundException("Flight not found");
     }
 
+    // Busca vuelos que contengan en su origen el String pasado por parámetro, ignorando mayúsculas y minúsculas
+    // Retorna una lista de FlightDto con los vuelos encontrados. Si la lista está vacía devuelve una excepción
     public List<FlightDto> findByOrigin(String origin) {
         List<Flight> flightsList = flightRepository.findByOriginContainingIgnoreCase(origin);
         if (!flightsList.isEmpty()) {
             return utils.flightsListMapper(flightsList);
         }
-        throw new NotFoundException("No se encontraron resultados");
+        throw new NotFoundException("No results found");
     }
 
+    // Busca vuelos por su origen y destino, ignorando mayúsculas y minúsculas
+    // Retorna una lista de FlightDto con los vuelos encontrados. Si la lista está vacía devuelve una excepción
     public List<FlightDto> findByOriginAndDestiny(String origin, String destiny) {
         List<Flight> flightList = flightRepository.findByOriginIgnoreCaseAndDestinyIgnoreCase(origin, destiny);
         if (!flightList.isEmpty()) {
             return utils.flightsListMapper(flightList);
         }
-        throw new NotFoundException("No se encontraron resultados");
+        throw new NotFoundException("No results found");
     }
 
+    // Busca vuelos por la compañía a la que pertenecen, según si su nombre contiene el String pasado por parámetro, ignorando mayúsculas y minúsculas
+    // Retorna una lista de FlightDto con los vuelos encontrados. Si la lista está vacía devuelve una excepción
     public List<FlightDto> findByCompanyName(String companyName) {
         List<Flight> flightList = flightRepository.findByCompanyNameContainingIgnoreCase(companyName);
         if (!flightList.isEmpty()) {
             return utils.flightsListMapper(flightList);
         }
-        throw new NotFoundException("No se encontraron resultados");
+        throw new NotFoundException("No results found");
     }
 
+    // Busca vuelos cuyo precio sea igual o menor al precio en pesos pasado por parámetro
+    // Retorna una lista de FlightDto con los vuelos encontrados ordenados por su precio. Si la lista está vacía devuelve una excepción
     public List<FlightDto> getOffers(Integer offerPrice) {
         List<FlightDto> flightsOffers = utils.detectOffers(flightRepository.findAll(), offerPrice);
         if (!flightsOffers.isEmpty()) {
             return flightsOffers;
         }
-        throw new NotFoundException("No se encontraron resultados");
+        throw new NotFoundException("No results found");
     }
 
+    // Guarda un nuevo vuelo, al que se le settea la compañía por su ID, y lo retorna
     public Flight create(Long companyId, Flight flight) {
         Optional<Company> companyOptional = companyRepository.findById(companyId);
         if (companyOptional.isPresent()) {
             flight.setCompany(companyOptional.get());
             return flightRepository.save(flight);
         }
-        throw new NotFoundException("Error al crear el vuelo, la compañía no fue encontrada");
+        throw new NotFoundException("Unable to create: Company not found");
     }
 
+    // Actualiza los datos de un vuelo existente, buscado por su ID, y lo retorna
+    // Si no lo encuentra no realiza la actualización y devuelve una excepción
     public Flight update(Long id, Flight flight) {
         Optional<Flight> flightOptional = flightRepository.findById(id);
         if (flightOptional.isPresent()) {
             flight.setId(id);
             return flightRepository.save(flight);
         }
-        throw new NotFoundException("No se puede actualizar, el vuelo no fue encontrado");
+        throw new NotFoundException("Unable to update: Flight not found");
     }
 
+    // Elimina un vuelo, buscado por su ID, y retorna un mensaje confirmando la acción
+    // Si no lo encuentra devuelve una excepción
     public ResponseDto deleteById(Long id) {
         Optional<Flight> flightOptional = flightRepository.findById(id);
         if (flightOptional.isPresent()) {
             flightRepository.deleteById(id);
-            return new ResponseDto("El vuelo " + id + " ha sido eliminado");
+            return new ResponseDto("The flight " + id + " has been deleted");
         }
-        throw new NotFoundException("No se puede eliminar, el vuelo no fue encontrado");
+        throw new NotFoundException("Unable to delete: Flight not found");
     }
 }

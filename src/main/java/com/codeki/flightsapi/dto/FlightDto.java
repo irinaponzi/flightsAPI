@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 public class FlightDto {
 
+    // En FlightDto el precio del vuelo es en pesos
     private Long id;
     private String origin;
     private String destiny;
@@ -23,25 +24,7 @@ public class FlightDto {
     private String frequency;
     private Company company;
 
-    public FlightDto(Long id, String origin, String destiny, LocalDateTime departureTime, LocalDateTime arrivingTime, Double convertedPrice, String frequency) {
-        this.id = id;
-        this.origin = origin;
-        this.destiny = destiny;
-        this.departureTime = departureTime;
-        this.arrivingTime = arrivingTime;
-        this.convertedPrice = convertedPrice;
-        this.frequency = frequency;
-    }
-    // Ver si alguno de estos construtores no se está usando
-    public FlightDto(String origin, String destiny, LocalDateTime departureTime, LocalDateTime arrivingTime, Double convertedPrice, String frequency) {
-        this.origin = origin;
-        this.destiny = destiny;
-        this.departureTime = departureTime;
-        this.arrivingTime = arrivingTime;
-        this.convertedPrice = convertedPrice;
-        this.frequency = frequency;
-    }
-
+    // Constructor sin ID
     public FlightDto(String origin, String destiny, LocalDateTime departureTime, LocalDateTime arrivingTime, Double convertedPrice, String frequency, Company company) {
         this.origin = origin;
         this.destiny = destiny;
