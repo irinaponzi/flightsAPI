@@ -80,6 +80,7 @@ public class FlightService {
     }
 
     // Guarda un nuevo vuelo, al que se le settea la compañía por su ID, y lo retorna
+    // Si no encuentra la compañía no guarda el vuelo y devuelve una excepción
     public Flight create(Long companyId, Flight flight) {
         Optional<Company> companyOptional = companyRepository.findById(companyId);
         if (companyOptional.isPresent()) {
@@ -95,6 +96,7 @@ public class FlightService {
         Optional<Flight> flightOptional = flightRepository.findById(id);
         if (flightOptional.isPresent()) {
             flight.setId(id);
+            flight.setCompany(flightOptional.get().getCompany());
             return flightRepository.save(flight);
         }
         throw new NotFoundException("Unable to update: Flight not found");
