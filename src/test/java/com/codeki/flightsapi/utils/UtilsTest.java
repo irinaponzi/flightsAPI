@@ -2,7 +2,6 @@ package com.codeki.flightsapi.utils;
 
 import com.codeki.flightsapi.dto.FlightDto;
 import com.codeki.flightsapi.model.Company;
-import com.codeki.flightsapi.model.Dollar;
 import com.codeki.flightsapi.model.Flight;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -28,7 +27,6 @@ public class UtilsTest {
     static Company company;
     static LocalDateTime departureTime;
     static LocalDateTime arrivingTime;
-    static Dollar dollar;
     static Double dollarPrice;
 
     @BeforeAll
