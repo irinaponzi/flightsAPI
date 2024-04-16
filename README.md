@@ -10,7 +10,7 @@ Desarrollado en Java (OpenJDK 17) y Spring Boot v.3.2.3
 
 ## Base de datos
 
-La API utiliza MySQL como sistema de gestión de bases de datos. Se puede acceder a su configuración en `application.properties`.
+La API utiliza MySQL como sistema de gestión de bases de datos. Se puede acceder a su configuración en `application.yml`.
 
 Por defecto, para ejecutar el proyecto es necesario crear un esquema vacío con el nombre `flightsDB`.
 

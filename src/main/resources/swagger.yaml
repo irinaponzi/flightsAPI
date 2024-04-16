@@ -1,6 +1,7 @@
+# Se incluye este .yaml para poder acceder a la documentación en Swagger que se encuentra en el README.md mediante un enlace
 openapi: 3.0.1
 info:
-  title: Flight API
+  title: Flights API
   version: v0
 servers:
   - url: http://localhost:8080

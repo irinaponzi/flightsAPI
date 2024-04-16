@@ -2,8 +2,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/flightsDB
-    username: root
-    password: root
+    username: #write your database username
+    password: #write your database password
   jpa:
     properties:
       hibernate:
