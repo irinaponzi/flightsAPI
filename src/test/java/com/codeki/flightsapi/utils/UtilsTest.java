@@ -48,15 +48,15 @@ public class UtilsTest {
         flightDtoList.add(new FlightDto(3L, "EZE", "MDQ", departureTime, arrivingTime, 8.0 * dollarPrice, "Diario", company));
     }
 
-   @Test
+    @Test
     void flightMapperTest() {
         Flight flight = flightList.get(0);
         FlightDto flightDtoExpected = flightDtoList.get(0);
 
-       FlightDto flightDtoActual = utils.flightMapper(flight, dollarPrice);
+        FlightDto flightDtoActual = utils.flightMapper(flight, dollarPrice);
 
-       assertEquals(flightDtoExpected.getConvertedPrice(), flightDtoActual.getConvertedPrice());
-       assertEquals(flightDtoExpected.getId(), flightDtoActual.getId());
+        assertEquals(flightDtoExpected.getConvertedPrice(), flightDtoActual.getConvertedPrice());
+        assertEquals(flightDtoExpected.getId(), flightDtoActual.getId());
     }
 
     @Test
