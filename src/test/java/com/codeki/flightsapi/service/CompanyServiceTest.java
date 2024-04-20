@@ -72,7 +72,7 @@ public class CompanyServiceTest {
     }
 
     @Test
-    void create() {
+    void createTest() {
         Company companyToSave = new Company("Lade", "https://lade.com.ar", "banner4");
 
         when(mockedCompanyRepository.save(companyToSave)).thenReturn(companyToSave);
@@ -83,7 +83,7 @@ public class CompanyServiceTest {
     }
 
     @Test
-    void deleteById() {
+    void deleteByIdTest() {
         Long id = 3L;
         Company companyToDeleted = companyList.get(2);
         ResponseDto responseDtoExpected = new ResponseDto("The company " + id + " has been deleted");
