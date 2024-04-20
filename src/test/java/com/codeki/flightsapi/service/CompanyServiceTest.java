@@ -4,7 +4,7 @@ import com.codeki.flightsapi.dto.ResponseDto;
 import com.codeki.flightsapi.model.Company;
 import com.codeki.flightsapi.repository.CompanyRepository;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +25,10 @@ public class CompanyServiceTest {
     CompanyService companyService;
 
     static CompanyRepository mockedCompanyRepository = mock(CompanyRepository.class);
-    List<Company> companyList;
+    static List<Company> companyList;
 
-    @BeforeEach
-    void setUp() {
+    @BeforeAll
+    static void setUp() {
 
         Company company1 = new Company(1L,"Aerolíneas Argentinas", "https://www.aerolineas.com.ar", "banner1");
         Company company2 = new Company(2L,"Flybondi", "https://flybondi.com/ar", "banner2");
