@@ -116,7 +116,7 @@ public class FlightService {
     }
 
     // Retorna el valor del dolar tarjeta que se utilizará: un promedio
-    private Double getDollarCart() {
+    protected Double getDollarCart() {
         Dollar dollar = utils.fetchDollarCard();
         return dollar.getPromedio();
     }
