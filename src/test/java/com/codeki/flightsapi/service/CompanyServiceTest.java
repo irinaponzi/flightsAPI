@@ -73,7 +73,7 @@ public class CompanyServiceTest {
 
     @Test
     void create() {
-        Company companyToSave = new Company(1L,"Lade", "https://lade.com.ar", "banner4");
+        Company companyToSave = new Company("Lade", "https://lade.com.ar", "banner4");
 
         when(mockedCompanyRepository.save(companyToSave)).thenReturn(companyToSave);
         Company companyActual = companyService.create(companyToSave);
