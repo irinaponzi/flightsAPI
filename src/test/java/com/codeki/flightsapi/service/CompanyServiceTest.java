@@ -6,6 +6,8 @@ import com.codeki.flightsapi.repository.CompanyRepository;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,10 +23,12 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class CompanyServiceTest {
 
-    @Autowired
+    @Mock
+    static CompanyRepository mockedCompanyRepository;
+
+    @InjectMocks
     CompanyService companyService;
 
-    static CompanyRepository mockedCompanyRepository = mock(CompanyRepository.class);
     static List<Company> companyList;
 
     @BeforeAll
